@@ -1,8 +1,13 @@
-/* Reset and Base Styles */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 :root {
@@ -65,13 +70,14 @@ body {
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
@@ -654,14 +660,21 @@ body, button, a, kbd, input, .project-item {
 }
 
 /* Responsive and Mobile-friendly overrides */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .console-shell {
-    width: 100vw;
-    height: 100dvh;
+    width: 100%;
+    height: 100%;
+    max-width: none;
     max-height: none;
     border-radius: 0px;
     border: none;
     margin: 0;
+  }
+  .logo-text {
+    font-size: 0.65rem;
+  }
+  .console-header {
+    padding: 0 8px;
   }
   .console-screen-wrapper {
     margin: 8px;
