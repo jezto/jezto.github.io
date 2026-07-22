@@ -586,8 +586,8 @@ function initMouseTrailCanvas() {
     constructor(x, y) {
       this.x = x;
       this.y = y;
-      this.vx = (Math.random() - 0.5) * 2;
-      this.vy = (Math.random() - 0.5) * 2;
+      this.vx = (Math.random() - 0.5) * 5;
+      this.vy = (Math.random() - 0.5) * 5;
       this.life = 1;
       this.size = Math.random() * 2 + 1;
       this.color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
@@ -596,7 +596,7 @@ function initMouseTrailCanvas() {
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      this.life -= 0.02;
+      this.life -= 0.05;
     }
     
     draw() {
@@ -611,9 +611,7 @@ function initMouseTrailCanvas() {
   document.addEventListener("mousemove", (e) => {
     // Only spawn particles if over background (not over console shell)
     // Actually we set pointer-events: none on canvas, so we can track mouse everywhere
-    for (let i = 0; i < 3; i++) {
-      particles.push(new Particle(e.clientX, e.clientY));
-    }
+    particles.push(new Particle(e.clientX, e.clientY));
   });
   
   function animate() {
