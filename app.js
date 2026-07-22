@@ -565,6 +565,176 @@ function bootConsole() {
   printBootLine();
 }
 
+// --- Interactive Mouse Trail Canvas ---
+function initMouseTrailCanvas() {
+  const canvas = document.getElementById("trail-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  
+  let width, height;
+  let particles = [];
+  
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  
+  window.addEventListener("resize", resize);
+  resize();
+  
+  class Particle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
+      this.life = 1;
+      this.size = Math.random() * 2 + 1;
+      this.color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    }
+    
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life -= 0.02;
+    }
+    
+    draw() {
+      ctx.globalAlpha = Math.max(0, this.life);
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  
+  document.addEventListener("mousemove", (e) => {
+    // Only spawn particles if over background (not over console shell)
+    // Actually we set pointer-events: none on canvas, so we can track mouse everywhere
+    for (let i = 0; i < 3; i++) {
+      particles.push(new Particle(e.clientX, e.clientY));
+    }
+  });
+  
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.update();
+      p.draw();
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+      }
+    }
+    // Optional: draw connecting lines between close particles
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 50) {
+          ctx.globalAlpha = Math.max(0, (1 - dist / 50) * Math.min(particles[i].life, particles[j].life));
+          ctx.strokeStyle = particles[i].color;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+}
+
+// --- Intro Loader Sequence (Tile Matrix) ---
+function runIntroLoader() {
+  const loaderEl = document.getElementById("intro-loader");
+  const matrixEl = document.getElementById("tile-matrix");
+  if (!loaderEl || !matrixEl) {
+    bootConsole();
+    return;
+  }
+  
+  // Display a "Click to start" prompt
+  const startPrompt = document.createElement("div");
+  startPrompt.style.position = "absolute";
+  startPrompt.style.fontFamily = "var(--font-mono)";
+  startPrompt.style.color = "var(--accent)";
+  startPrompt.style.fontSize = "0.8rem";
+  startPrompt.style.letterSpacing = "0.2em";
+  startPrompt.style.animation = "intro-blink 1.5s infinite";
+  startPrompt.style.cursor = "pointer";
+  startPrompt.innerText = "[ CLICK ANYWHERE TO INITIALIZE ]";
+  loaderEl.appendChild(startPrompt);
+  
+  const startSequence = () => {
+    document.removeEventListener("click", startSequence);
+    document.removeEventListener("keydown", startSequence);
+    startPrompt.remove();
+    synth.init(); // Initialize audio context on user gesture
+    
+    // Matrix map for "JEZTO" (5 rows, 25 cols)
+    const letterMap = [
+      [0,0,0,1, 0, 1,1,1,1, 0, 1,1,1,1, 0, 1,1,1,1,1, 0, 0,1,1,0],
+      [0,0,0,1, 0, 1,0,0,0, 0, 0,0,0,1, 0, 0,0,1,0,0, 0, 1,0,0,1],
+      [0,0,0,1, 0, 1,1,1,0, 0, 0,0,1,0, 0, 0,0,1,0,0, 0, 1,0,0,1],
+      [1,0,0,1, 0, 1,0,0,0, 0, 0,1,0,0, 0, 0,0,1,0,0, 0, 1,0,0,1],
+      [0,1,1,0, 0, 1,1,1,1, 0, 1,1,1,1, 0, 0,0,1,0,0, 0, 0,1,1,2]
+    ];
+    
+    const tiles = [];
+    
+    // Create 125 tiles
+    for (let r = 0; r < 5; r++) {
+      for (let c = 0; c < 25; c++) {
+        const tile = document.createElement("div");
+        tile.className = "matrix-tile";
+        matrixEl.appendChild(tile);
+        
+        const val = letterMap[r][c];
+        if (val > 0) {
+          tiles.push({ el: tile, type: val, c: c, r: r });
+        }
+      }
+    }
+    
+    // Sort tiles generally left-to-right to animate them in a wave
+    tiles.sort((a, b) => (a.c + Math.random()*2) - (b.c + Math.random()*2));
+    
+    let delay = 100;
+    
+    tiles.forEach((t, i) => {
+      setTimeout(() => {
+        if (t.type === 2) {
+          t.el.classList.add("active-accent");
+        } else {
+          t.el.classList.add("active");
+        }
+        if (i % 3 === 0) synth.key(); // play sound occasionally
+      }, delay + (i * 30));
+    });
+    
+    // Finish sequence
+    const totalDuration = delay + (tiles.length * 30) + 800;
+    setTimeout(() => {
+      loaderEl.classList.add("fade-out");
+      synth.success();
+      setTimeout(() => {
+        loaderEl.remove();
+        bootConsole();
+      }, 800);
+    }, totalDuration);
+  };
+  
+  // Wait for user interaction to bypass browser autoplay policies
+  document.addEventListener("click", startSequence);
+  document.addEventListener("keydown", startSequence);
+}
+
 // --- Init Application ---
 document.addEventListener("DOMContentLoaded", () => {
   initThemes();
@@ -572,6 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initKeyboardNav();
   initBackgroundParallax();
   initCustomCursor();
+  initMouseTrailCanvas();
   startLiveServices();
 
   // Setup slide buttons
@@ -579,6 +750,6 @@ document.addEventListener("DOMContentLoaded", () => {
   btnNextEl.addEventListener("click", nextSlide);
   btnHomeEl.addEventListener("click", goHome);
 
-  // Trigger boot sequence
-  bootConsole();
+  // Trigger intro sequence
+  runIntroLoader();
 });
