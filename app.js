@@ -122,58 +122,80 @@ const synth = new SynthEngine();
 // --- Portfolio Slide Content Data ---
 const slides = [
   {
-    id: "welcome",
-    title: "Yo, I'm Jesto.",
-    content: "Creative developer, UI engineer, and tech alchemist.\n\nI build web experiences that feel <span class=\"highlight\">responsive</span>, look <span class=\"highlight\">vibrant</span>, and sound <span class=\"highlight\">tactile</span>.\n\nWelcome to my digital console."
+    id: "intro",
+    title: "Yo, I'm Jezto.",
+    navTitle: "Home",
+    content: "I'm a student driven by a deep passion for tech, constantly exploring the intersection where <span class=\"highlight\">creativity</span> meets <span class=\"highlight\">technology</span>.\n\nI believe in the power of <span class=\"highlight\">minimalism</span>—stripping away the excess to build clean, purposeful digital experiences.\n\nThanks for sticking up with me pops"
   },
   {
-    id: "about",
-    title: "About Me",
-    content: "I explore the sweet spot where retro constraints meet modern web capabilities.\n\nI design websites, build dev tools, and experiment with audio synthesizer web integrations. I believe interfaces should feel like physical instruments—alive, reactive, and satisfying to touch."
-  },
-  {
-    id: "tech-stack",
-    title: "Tech Core",
-    content: "Languages and tools I use to bend pixels and synthesize audio:",
+    id: "languages",
+    title: "Languages",
+    navTitle: "Skills",
+    content: "A look at the languages I have learned and use to build my digital experiences:",
     html: `
       <div class="tech-grid">
-        <div class="tech-card"><span class="tech-card-dot"></span>JavaScript (ES6+)</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>TypeScript</div>
+        <div class="tech-card"><span class="tech-card-dot"></span>C++</div>
+        <div class="tech-card"><span class="tech-card-dot"></span>Python</div>
         <div class="tech-card"><span class="tech-card-dot"></span>HTML5 / CSS3</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>React / Next.js</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>Web Audio API</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>Node.js / Express</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>TailwindCSS</div>
-        <div class="tech-card"><span class="tech-card-dot"></span>Vite / Rollup</div>
+        <div class="tech-card"><span class="tech-card-dot"></span>JavaScript</div>
+      </div>
+    `
+  },
+  {
+    id: "education",
+    title: "Timeline",
+    navTitle: "Education",
+    content: "My journey through the matrix:",
+    html: `
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">2026 - Present</div>
+          <div class="timeline-title">BCA (Honours)</div>
+          <div class="timeline-desc">St. Thomas College (Autonomous), Thrissur</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023 - 2025</div>
+          <div class="timeline-title">Higher Secondary</div>
+          <div class="timeline-desc">Vivekodayam Boys Higher Secondary School, Thrissur</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2021 - 2023</div>
+          <div class="timeline-title">High School</div>
+          <div class="timeline-desc">St. Thomas School, Thiroor, Thrissur</div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "terminal",
+    title: "Terminal",
+    navTitle: "Terminal",
+    content: "Run some commands to see what happens. Type 'help' to get started.",
+    html: `
+      <div class="terminal-window" onclick="document.getElementById('cli-input').focus()">
+        <div class="terminal-output" id="cli-output">
+          <div class="terminal-line">Welcome to the terminal 1.0</div>
+          <div class="terminal-line">Session initialized</div>
+        </div>
+        <div class="terminal-input-row">
+          <span>guest@nyx:~$</span>
+          <input type="text" id="cli-input" class="terminal-input" autocomplete="off" spellcheck="false" />
+        </div>
       </div>
     `
   },
   {
     id: "projects",
-    title: "Selected Hacks",
+    title: "Projects",
+    navTitle: "Projects",
     content: "Recent creations from the lab:",
     html: `
       <div class="projects-container">
-        <div class="project-item" onclick="window.open('https://github.com/jesto', '_blank')">
+        <div class="project-item" style="cursor: default; pointer-events: none; background: rgba(255,255,255,0.02);">
           <div class="project-header">
-            <span class="project-title">⚡ synth-engine.js</span>
-            <span class="project-url">Source ↗</span>
+            <span class="project-title">🚧 Coming Soon...</span>
           </div>
-          <p class="project-desc">A micro-sized JS package to generate realistic physical mechanical keyboard clicks in the browser with Web Audio API.</p>
-        </div>
-        <div class="project-item" onclick="window.open('https://github.com/jesto', '_blank')">
-          <div class="project-header">
-            <span class="project-title">🎨 retro-canvas-editor</span>
-            <span class="project-url">Source ↗</span>
-          </div>
-          <p class="project-desc">Interactive pixel canvas workspace with editable layers, retro custom grids, and built-in animated sticker drag support.</p>
-        </div>
-        <div class="project-item" onclick="window.open('https://github.com/jesto', '_blank')">
-          <div class="project-header">
-            <span class="project-title">🔮 matrix-starfield-backdrop</span>
-            <span class="project-url">Source ↗</span>
-          </div>
-          <p class="project-desc">Vanilla GPU-accelerated canvas background simulating futuristic matrix drops and high-density starfields.</p>
+          <p class="project-desc" style="margin-top: 8px;">I am currently brewing some new projects. Check back soon to see what I've been working on!</p>
         </div>
       </div>
     `
@@ -181,18 +203,22 @@ const slides = [
   {
     id: "contact",
     title: "Get In Touch",
+    navTitle: "Contact",
     content: "Let's build something beautiful, weird, or loud.\n\nYou can reach me across the web:",
     html: `
       <div class="contact-actions">
-        <a href="mailto:jesto@example.com" class="contact-btn" id="email-btn-link">
+        <a href="mailto:jestocjofficial@gmail.com" class="contact-btn" id="email-btn-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           Say Hello
         </a>
-        <a href="https://github.com/jesto" target="_blank" class="contact-btn contact-btn-outline">
+        <a href="https://github.com/jezto" target="_blank" class="contact-btn contact-btn-outline">
           GitHub
         </a>
-        <a href="https://linkedin.com" target="_blank" class="contact-btn contact-btn-outline">
-          LinkedIn
+        <a href="https://www.instagram.com/jestoyeee/" target="_blank" class="contact-btn contact-btn-outline">
+          Instagram
+        </a>
+        <a href="https://x.com/jestoyeee" target="_blank" class="contact-btn contact-btn-outline">
+          Twitter
         </a>
       </div>
     `
@@ -299,6 +325,12 @@ function typeContent(slide, onComplete) {
 
       if (slide.html) {
         additionalContentEl.innerHTML = slide.html;
+        
+        // --- Run Post-Render Initializations ---
+        if (slide.id === "terminal") {
+          const cliInput = document.getElementById("cli-input");
+          if (cliInput) cliInput.focus();
+        }
       }
 
       if (onComplete) onComplete();
@@ -341,8 +373,14 @@ function renderSlide(index) {
   currentSlideIndex = index;
   
   // Disable / Enable buttons
-  btnPrevEl.disabled = (index === 0);
-  btnNextEl.disabled = (index === slides.length - 1);
+  btnPrevEl.disabled = index === 0;
+  btnNextEl.disabled = index === slides.length - 1;
+  
+  // Update sidebar active state
+  document.querySelectorAll("#sidebar-menu .sidebar-item").forEach((item, i) => {
+    if (i === index) item.classList.add("active");
+    else item.classList.remove("active");
+  });
   
   // Update OSD counter
   const osdEl = document.getElementById("screen-osd");
@@ -739,9 +777,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initSoundToggle();
   initKeyboardNav();
   initBackgroundParallax();
-  initCustomCursor();
   initMouseTrailCanvas();
   startLiveServices();
+  initSidebar();
 
   // Setup slide buttons
   btnPrevEl.addEventListener("click", prevSlide);
@@ -750,4 +788,99 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Trigger intro sequence
   runIntroLoader();
+});
+
+// --- Sidebar Initialization ---
+function initSidebar() {
+  const menuEl = document.getElementById("sidebar-menu");
+  if (!menuEl) return;
+  
+  slides.forEach((slide, index) => {
+    const li = document.createElement("li");
+    li.className = "sidebar-item";
+    if (index === currentSlideIndex) li.classList.add("active");
+    li.innerHTML = `
+      <div class="sidebar-dot"></div>
+      <span class="sidebar-text">${slide.navTitle || slide.title}</span>
+    `;
+    li.addEventListener("click", () => {
+      synth.key();
+      renderSlide(index);
+    });
+    menuEl.appendChild(li);
+  });
+}
+
+// --- Interactive Terminal Logic ---
+document.addEventListener("keydown", (e) => {
+  if (e.target && e.target.id === "cli-input") {
+    if (e.key === "Enter") {
+      const input = e.target.value.trim();
+      if (!input) return;
+      e.target.value = "";
+      
+      const output = document.getElementById("cli-output");
+      // Append the command
+      const cmdLine = document.createElement("div");
+      cmdLine.className = "terminal-line cmd-echo";
+      cmdLine.textContent = "guest@nyx:~$ " + input;
+      output.appendChild(cmdLine);
+      
+      // Parse command
+      const args = input.toLowerCase().split(" ");
+      const cmd = args[0];
+      let res = "";
+      
+      switch (cmd) {
+        case "help":
+          res = "Available commands: help, clear, date, contact, ip, matrix, coffee, skills";
+          break;
+        case "date":
+          res = new Date().toString();
+          break;
+        case "contact":
+          res = "Email: jestocjofficial@gmail.com";
+          break;
+        case "ip":
+          res = "Resolving host... IPv4 Address: " + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 100) + ".42";
+          break;
+        case "matrix":
+          res = "01001101 01100001 01110100 01110010 01101001 01111000... System overloaded.";
+          break;
+        case "coffee":
+          res = "☕ Brewing... Done. Enjoy your virtual espresso.";
+          break;
+        case "skills":
+          res = "C++, Python, HTML/CSS, JavaScript. Boot up the Languages tab for more.";
+          break;
+        case "sudo":
+          res = "Nice try, but this incident will be reported.";
+          break;
+        case "clear":
+          output.innerHTML = "";
+          break;
+        default:
+          res = `Command not found: ${cmd}. Type 'help' for available commands.`;
+      }
+      
+      if (res) {
+        const resLine = document.createElement("div");
+        resLine.className = "terminal-line";
+        if (res.startsWith("Command not found") || res.startsWith("Nice try")) {
+          resLine.classList.add("error");
+          if (synth && synth.error) {
+             synth.error();
+          } else if (synth && synth.key) {
+             synth.key();
+          }
+        } else {
+          if (synth && synth.key) synth.key();
+        }
+        resLine.textContent = res;
+        output.appendChild(resLine);
+      }
+      
+      output.scrollTop = output.scrollHeight;
+    }
+  }
 });
