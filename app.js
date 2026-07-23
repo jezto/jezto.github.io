@@ -421,7 +421,7 @@ function goHome() {
 
 // --- Theme Switch Engine ---
 function initThemes() {
-  const savedTheme = localStorage.getItem("jesto-theme") || "cyber-green";
+  const savedTheme = localStorage.getItem("jesto-theme") || "rose-gold";
   document.documentElement.setAttribute("data-theme", savedTheme);
   
   themeBtnEl.addEventListener("click", (e) => {
